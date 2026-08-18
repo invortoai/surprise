@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Special Question For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rozha+One&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --pink: #ff758c;
+    --yellow: #fffa65;
+    --red: #e63946;
+    --dark: #1e1e24;
+    --green: #4ade80;
+  }
+
+  html, body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background:
+      radial-gradient(circle at 20% 20%, #fff86a 0%, transparent 28%),
+      radial-gradient(circle at 80% 80%, #ff9aae 0%, transparent 30%),
+      linear-gradient(135deg, #fffa65 0%, #ff758c 100%);
+    font-family: "Comic Neue", cursive, sans-serif;
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+
+  /* Decorative background dots */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.25;
+    background-image:
+      radial-gradient(#1e1e24 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .card {
+    width: min(480px, 94vw);
+    background: #fff;
+    border: 5px solid var(--dark);
+    box-shadow: 10px 10px 0 var(--dark);
+    border-radius: 24px;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  .comic-title {
+    font-family: "Bangers", cursive;
+    font-size: clamp(2.2rem, 9vw, 2.8rem);
+    color: var(--red);
+    text-shadow:
+      2px 2px 0 var(--yellow),
+      4px 4px 0 var(--dark);
+    margin: 0 0 25px;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+
+  .timer-banner {
+    display: none;
+    background: #ffe066;
+    border: 3px solid var(--dark);
+    padding: 7px 14px;
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    color: #d00000;
+    box-shadow: 3px 3px 0 var(--dark);
+  }
+
+  .btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 25px;
+    min-height: 150px;
+    position: relative;
+  }
+
+  .btn {
+    width: 100%;
+    font-family: "Comic Neue", cursive;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 14px 20px;
+    border: 4px solid var(--dark);
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--dark);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--dark);
+  }
+
+  .btn-yes {
+    background: var(--green);
+    color: #064e3b;
+  }
+
+  .btn-no {
+    background: #f87171;
+    color: #450a0a;
+    position: relative;
+    transition:
+      transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 20;
+  }
+
+  .result-view {
+    display: none;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes popIn {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .gif-container {
+    margin-top: 12px;
+  }
+
+  .gif-container img {
+    width: 100%;
+    max-height: 240px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 4px solid var(--dark);
+    box-shadow: 5px 5px 0 var(--dark);
+  }
+
+  .romantic-shayari {
+    font-family: "Rozha One", serif;
+    font-size: 1.3rem;
+    color: #800020;
+    line-height: 1.6;
+    margin-top: 18px;
+    background: #fff0f3;
+    padding: 16px;
+    border-radius: 16px;
+    border: 2px dashed #ff4d6d;
+  }
+
+  .whatsapp-badge {
+    font-size: 1.75rem;
+    color: #ff0055;
+    animation: pulse 1s infinite alternate;
+    font-family: "Bangers", cursive;
+    margin-top: 10px;
+  }
+
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+
+    to {
+      transform: scale(1.08);
+    }
+  }
+
+  .floating-cutout {
+    position: fixed;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    border: 4px solid #ff4d6d;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    pointer-events: none;
+    z-index: 5;
+    background: white;
+    object-fit: cover;
+    animation: floatAround 5s infinite ease-in-out;
+  }
+
+  @keyframes floatAround {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+      transform: translateY(-25px) rotate(12deg);
+    }
+  }
+
+  .small-note {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 500px) {
+    body {
+      padding: 14px;
+    }
+
+    .card {
+      padding: 22px 18px;
+      box-shadow: 7px 7px 0 var(--dark);
+    }
+
+    .btn-container {
+      min-height: 170px;
+    }
+
+    .floating-cutout {
+      width: 70px;
+      height: 70px;
+      border-width: 3px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="quizCard">
+
+  <div id="timerDisplay" class="timer-banner">
+    ⚠️ Bomb detonates in:
+    <span id="countdown">5</span>s
+  </div>
+
+  <div class="comic-title" id="questionText">
+    aap kiske betu hai?
+  </div>
+
+  <div class="btn-container" id="buttonArea">
+
+    <button
+      class="btn btn-yes"
+      id="btnYes"
+      type="button"
+      onclick="selectOptionOne()"
+    >
+      1. apne बबडू ka 🥰
+    </button>
+
+    <button
+      class="btn btn-no"
+      id="btnNo"
+      type="button"
+    >
+      2. kisika nahi 😒
+    </button>
+
+  </div>
+
+  <div class="result-view" id="resultArea"></div>
+
+</div>
+
+
+<script>
+  let audioCtx = null;
+  let countdownInterval = null;
+  let timer = 5;
+  let dodgeCount = 0;
+  let melodyStarted = false;
+
+  const myCutouts = [
+    "https://i.postimg.cc/BnSNH8WV/0C9A7F0B-3DAF-4A96-84AF-A1221B90C016-4-5005-c.jpg",
+    "https://i.postimg.cc/Qxk0FQPD/1E2BD491-3F1F-4589-A2D3-03C3CE5E711D-4-5005-c.jpg",
+    "https://i.postimg.cc/TYqCKVsB/C8071C15-23D7-4D26-A5F6-BF783B8251D7-1-105-c.jpg",
+    "https://i.postimg.cc/Qxk0FQPD/1E2BD491-3F1F-4589-A2D3-03C3CE5E711D-4-5005-c.jpg",
+    "https://i.postimg.cc/TYqCKVsB/C8071C15-23D7-4D26-A5F6-BF783B8251D7-1-105-c.jpg"
+  ];
+
+
+  /*
+   * AUDIO
+   */
+
+  function initAudio() {
+    if (!audioCtx) {
+      audioCtx = new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+    }
+
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+  }
+
+
+  function playSfx(type) {
+
+    initAudio();
+
+    const now = audioCtx.currentTime;
+
+    if (type === "dodge") {
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = "sine";
+
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.exponentialRampToValueAtTime(
+        900,
+        now + 0.18
+      );
+
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.linearRampToValueAtTime(
+        0.01,
+        now + 0.18
+      );
+
+      osc.start(now);
+      osc.stop(now + 0.18);
+    }
+
+
+    else if (type === "tick") {
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = "square";
+      osc.frequency.setValueAtTime(1200, now);
+
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        now + 0.04
+      );
+
+      osc.start(now);
+      osc.stop(now + 0.04);
+    }
+
+
+    else if (type === "boom") {
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = "sawtooth";
+
+      osc.frequency.setValueAtTime(180, now);
+      osc.frequency.exponentialRampToValueAtTime(
+        30,
+        now + 0.8
+      );
+
+      gain.gain.setValueAtTime(0.7, now);
+      gain.gain.exponentialRampToValueAtTime(
+        0.01,
+        now + 0.8
+      );
+
+      osc.start(now);
+      osc.stop(now + 0.8);
+    }
+
+
+    else if (type === "win") {
+
+      const notes = [
+        523.25,
+        659.25,
+        783.99,
+        1046.50
+      ];
+
+      notes.forEach((freq, idx) => {
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        const start = now + idx * 0.08;
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.25, start);
+        gain.gain.linearRampToValueAtTime(
+          0.01,
+          start + 0.4
+        );
+
+        osc.start(start);
+        osc.stop(start + 0.4);
+      });
+    }
+  }
+
+
+  function playRomanticMelody() {
+
+    if (melodyStarted) return;
+
+    melodyStarted = true;
+
+    initAudio();
+
+    const notes = [
+      { f: 392.00, d: 0.4 },
+      { f: 440.00, d: 0.4 },
+      { f: 493.88, d: 0.6 },
+      { f: 587.33, d: 0.8 },
+      { f: 523.25, d: 0.5 },
+      { f: 493.88, d: 0.5 },
+      { f: 440.00, d: 0.9 },
+      { f: 392.00, d: 1.2 }
+    ];
+
+    let stepTime = audioCtx.currentTime + 0.3;
+
+    function scheduleLoop() {
+
+      if (!melodyStarted) return;
+
+      notes.forEach(note => {
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+
+        osc.frequency.setValueAtTime(
+          note.f,
+          stepTime
+        );
+
+        gain.gain.setValueAtTime(
+          0,
+          stepTime
+        );
+
+        gain.gain.linearRampToValueAtTime(
+          0.18,
+          stepTime + 0.05
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          stepTime + note.d
+        );
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(stepTime);
+        osc.stop(stepTime + note.d);
+
+        stepTime += note.d;
+      });
+
+      setTimeout(scheduleLoop, 4500);
+    }
+
+    scheduleLoop();
+  }
+
+
+  /*
+   * BOMB TIMER
+   */
+
+  function startBombTimer() {
+
+    if (countdownInterval) return;
+
+    const timerBanner =
+      document.getElementById("timerDisplay");
+
+    timerBanner.style.display = "inline-block";
+
+    timer = 5;
+
+    document.getElementById("countdown").innerText =
+      timer;
+
+    playSfx("tick");
+
+    countdownInterval = setInterval(() => {
+
+      timer--;
+
+      document.getElementById("countdown").innerText =
+        timer;
+
+      if (timer > 0) {
+        playSfx("tick");
+      }
+
+      if (timer <= 0) {
+
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+
+        triggerAgneepathExplosion();
+      }
+
+    }, 1000);
+  }
+
+
+  /*
+   * DODGING NO BUTTON
+   */
+
+  function handleDodge(event) {
+
+    if (event) {
+      event.preventDefault();
+    }
+
+    dodgeCount++;
+
+    playSfx("dodge");
+
+    if (dodgeCount === 1) {
+      startBombTimer();
+    }
+
+    const btn = document.getElementById("btnNo");
+
+    const maxX =
+      Math.min(
+        120,
+        window.innerWidth * 0.22
+      );
+
+    const maxY = 90;
+
+    const x =
+      (Math.random() - 0.5) *
+      maxX *
+      2;
+
+    const y =
+      (Math.random() - 0.5) *
+      maxY *
+      2;
+
+    const rotation =
+      Math.random() * 24 - 12;
+
+    btn.style.transform =
+      `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+  }
+
+
+  /*
+   * YES
+   */
+
+  function selectOptionOne() {
+
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+
+    playSfx("win");
+    playRomanticMelody();
+
+    document.getElementById("questionText")
+      .style.display = "none";
+
+    document.getElementById("buttonArea")
+      .style.display = "none";
+
+    document.getElementById("timerDisplay")
+      .style.display = "none";
+
+    const result =
+      document.getElementById("resultArea");
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+
+      <div class="whatsapp-badge">
+        🎉 AAPKO MILTE HAIN 7 CRORE! 🎉
+      </div>
+
+      <div class="gif-container">
+
+        <img
+          src="https://media.giphy.com/media/isP4TLqhjm32E/giphy.gif"
+          alt="Amitabh Bachchan KBC 7 Crore"
+        >
+
+      </div>
+
+      <h2 style="
+        color:#ff0055;
+        margin:16px 0 0;
+        font-family:'Bangers';
+        font-size:1.6rem;
+      ">
+        HOPE YOU HAVE A WONDERFUL DAY! 🌹✨
+      </h2>
+
+      <div class="romantic-shayari">
+
+        "मुझे तुमसे मोहब्बत है दीवानगी की हद तक,<br>
+        दीवाना मुझे बनाओ ना दीवानगी की हद तक।" ❤️
+
+      </div>
+    `;
+
+    spawnFloatingPhotos();
+  }
+
+
+  /*
+   * BOOM
+   */
+
+  function triggerAgneepathExplosion() {
+
+    playSfx("boom");
+    playRomanticMelody();
+
+    document.getElementById("questionText")
+      .style.display = "none";
+
+    document.getElementById("buttonArea")
+      .style.display = "none";
+
+    document.getElementById("timerDisplay")
+      .style.display = "none";
+
+    const result =
+      document.getElementById("resultArea");
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+
+      <div
+        class="whatsapp-badge"
+        style="color:#d00000;"
+      >
+        💥 BOOM! ZEHER WALI KHEER KHA LI! 💥
+      </div>
+
+      <div class="gif-container">
+
+        <img
+          src="https://media1.tenor.com/m/o6oI5jWk5B8AAAAC/amitabh-bachchan-agneepath.gif"
+          alt="Agneepath Poison Kheer"
+        >
+
+      </div>
+
+      <p class="small-note">
+        (Dekha? Option 2 choose karne ka nateeja 😜)
+      </p>
+
+      <div class="romantic-shayari">
+
+        Par phir bhi...<br>
+
+        <b>
+          "मुझे तुमसे मोहब्बत है दीवानगी की हद तक,<br>
+          दीवाना मुझे बनाओ ना दीवानगी की हद तक।"
+        </b>
+        ❤️
+
+        <span style="
+          font-size:1.05rem;
+          color:#ff0055;
+          display:block;
+          margin-top:8px;
+        ">
+          Have a sweet & beautiful morning betu!
+        </span>
+
+      </div>
+    `;
+
+    spawnFloatingPhotos();
+  }
+
+
+  /*
+   * FLOATING PHOTOS
+   */
+
+  function spawnFloatingPhotos() {
+
+    const positions = [
+      { top: "6%", left: "5%" },
+      { top: "8%", right: "6%" },
+      { bottom: "8%", left: "6%" },
+      { bottom: "6%", right: "5%" },
+      { top: "45%", left: "3%" }
+    ];
+
+    positions.forEach((pos, i) => {
+
+      const img =
+        document.createElement("img");
+
+      img.src =
+        myCutouts[i % myCutouts.length];
+
+      img.className =
+        "floating-cutout";
+
+      img.style.top =
+        pos.top || "auto";
+
+      img.style.bottom =
+        pos.bottom || "auto";
+
+      img.style.left =
+        pos.left || "auto";
+
+      img.style.right =
+        pos.right || "auto";
+
+      img.style.animationDelay =
+        `${i * 0.7}s`;
+
+      document.body.appendChild(img);
+    });
+  }
+
+
+  /*
+   * EVENT HANDLERS
+   *
+   * We deliberately dodge on mouseover AND touch.
+   */
+
+  const noButton =
+    document.getElementById("btnNo");
+
+  noButton.addEventListener(
+    "mouseover",
+    handleDodge
+  );
+
+  noButton.addEventListener(
+    "touchstart",
+    handleDodge,
+    { passive: false }
+  );
+
+  noButton.addEventListener(
+    "click",
+    handleDodge
+  );
+
+</script>
+
+</body>
+</html>
